@@ -19,7 +19,7 @@ $(function() { // Same as document.addEventListener("DOMContentLoaded"...
     var categoriesTitleHtml = "snippets/categories-title-snippet.html";
     var categoryHtml = "snippets/category-snippet.html";
     var menuItemsUrl =
-        "https://davids-restaurant.herokuapp.com/menu_items.json?category=";
+        "https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json";
     var menuItemsTitleHtml = "snippets/menu-items-title.html";
     var menuItemHtml = "snippets/menu-item.html";
 
@@ -61,7 +61,7 @@ $(function() { // Same as document.addEventListener("DOMContentLoaded"...
     };
 
     // On page load (before images or CSS)
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function (event) {
 
         // TODO: STEP 0: Look over the code from
         // *** start ***
@@ -80,23 +80,24 @@ $(function() { // Same as document.addEventListener("DOMContentLoaded"...
 
         // *** start ***
         // On first load, show home view
-        showLoading("#main-content");
-        $ajaxUtils.sendGetRequest(
-            allCategoriesUrl,
-            buildAndShowHomeHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
-            true); // Explicitely setting the flag to get JSON from server processed into an object literal
+    showLoading("#main-content");
+    $ajaxUtils.sendGetRequest(
+        allCategoriesUrl,
+        buildAndShowHomeHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
+        true); // Explicitely setting the flag to get JSON from server processed into an object literal
     });
     // *** finish **
 
 
     // Builds HTML for the home page based on categories array
     // returned from the server.
-    function buildAndShowHomeHTML(categories) {
+    function buildAndShowHomeHTML (categories) {
 
         // Load home snippet page
         $ajaxUtils.sendGetRequest(
             homeHtmlUrl,
-            function(homeHtml) {
+            function (homeHtml) {
+
                 // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
                 // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
                 // variable's name implies it expects.
@@ -118,22 +119,22 @@ $(function() { // Same as document.addEventListener("DOMContentLoaded"...
                 //
                 // var homeHtmlToInsertIntoMainPage = ....
 
-                var homeHtmlToInsertIntoMainPage = 
-                insertProperty(homeHtml, "randomCategoryShortName", chosenCategoryShortName);
-                
+            chosenCategoryShortName = "'" + chosenCategoryShortName + "'";
+            var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", chosenCategoryShortName);
+
                 // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
                 // Use the existing insertHtml function for that purpose. Look through this code for an example
                 // of how to do that.
                 // ....
 
-                insertHtml('#main-content', homeHtmlToInsertIntoMainPage);
-            },
-            false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
+            insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
+        },
+        false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
     }
 
 
     // Given array of category objects, returns a random category object.
-    function chooseRandomCategory(categories) {
+    function chooseRandomCategory (categories) {
         // Choose a random index into the array (from 0 inclusively until array length (exclusively))
         var randomArrayIndex = Math.floor(Math.random() * categories.length);
 
@@ -153,7 +154,7 @@ $(function() { // Same as document.addEventListener("DOMContentLoaded"...
 
     // Load the menu items view
     // 'categoryShort' is a short_name for a category
-    dc.loadMenuItems = function(categoryShort) {
+    dc.loadMenuItems = function (categoryShort) {
         showLoading("#main-content");
         $ajaxUtils.sendGetRequest(
             menuItemsUrl + categoryShort,
@@ -167,11 +168,11 @@ $(function() { // Same as document.addEventListener("DOMContentLoaded"...
         // Load title snippet of categories page
         $ajaxUtils.sendGetRequest(
             categoriesTitleHtml,
-            function(categoriesTitleHtml) {
+            function (categoriesTitleHtml) {
                 // Retrieve single category snippet
                 $ajaxUtils.sendGetRequest(
                     categoryHtml,
-                    function(categoryHtml) {
+                    function (categoryHtml) {
                         // Switch CSS class active to menu button
                         switchMenuToActive();
 
